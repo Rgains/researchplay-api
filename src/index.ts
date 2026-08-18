@@ -1,5 +1,5 @@
 import { webcrypto } from "node:crypto";
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth";
 import problemRoutes from "./routes/problems";
@@ -27,13 +27,23 @@ if (!globalThis.crypto) {
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: ['http://localhost:4200', 'https://researchplay.netlify.app'],
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
 
+/** Api Landing */
+app.get('', (req: Request, res: Response) => {
+  res.json({
+    status: 200,
+    statusText: "Success",
+    message: "Welcome to ResearchPlay's API."
+  });
+});
+
+/**  API Health check */
 app.get("/api/health", (_req, res) =>
   res.json({ ok: true, service: "openbrief-api" }),
 );
