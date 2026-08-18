@@ -27,7 +27,7 @@ if (!globalThis.crypto) {
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:4200', 'https://researchplay.netlify.app'],
+  origin: ['http://localhost:4200', 'https://researchplay.netlify.app', 'https://6a84e8692663830008f23307--researchplay.netlify.app'],
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
