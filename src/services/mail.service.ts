@@ -38,8 +38,8 @@ class MailService {
             subject: `Verification Code`,
             html: `<p>Here is your verification code, ${code}.</p> 
             <p>Click the link to verify your account 
-            <a href="http://localhost:4200/auth/otp-verification?token=${token}">
-            http://localhost:4200/auth/otp-verification?token=${token}</a></p>`
+            <a href="${currentConfig.frontendUrl}/auth/otp-verification?token=${token}">
+            ${currentConfig.frontendUrl}/auth/otp-verification?token=${token}</a></p>`
         });
     }
 }

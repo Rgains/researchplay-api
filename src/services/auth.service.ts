@@ -49,7 +49,7 @@ class AuthService {
 
       logger.info("[NEW SIGN UP] successful", saved_user);
 
-      mailService.sendVerificationTokenMail(verification_code, verification_token);
+      mailService.sendVerificationTokenMail(verification_code, verification_token, currentConfig.env === 'production' ? email : null);
 
       res.status(201).json({
         message: "Account created successfully! Please, check your mail to complete your account verification",
@@ -160,7 +160,7 @@ class AuthService {
       const verification_code = generateVerificationCode();
       const verification_token = generateAcctVerificationToken({ email: user?.email, code: verification_code });
 
-      mailService.sendVerificationTokenMail(verification_code, verification_token);
+      mailService.sendVerificationTokenMail(verification_code, verification_token, currentConfig.env === 'production' ? email : null);
 
       return res.status(200).json({
         statusCode: 200,
