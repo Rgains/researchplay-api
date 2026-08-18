@@ -23,9 +23,7 @@ class InstituteService {
     try {
       const institution = new Institute();
 
-      institution.name = req.body.name;
-      institution.faculties = req.body.faculties;
-      institution.departments = req.body.departments;
+      institution.institutionName = req.body.name;
 
       await institution.save();
 
