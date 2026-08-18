@@ -2,7 +2,7 @@ import { config } from "dotenv";
 
 config();
 
-const env: string = process.env.NODE_ENV || 'development';
+const env: string = process.env.NODE_ENV!;
 
 const env_config: any = {
     production: {
