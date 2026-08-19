@@ -19,6 +19,7 @@ const env_config: any = {
         mailUser: process.env.MAIL_USER,
         mailPassword: process.env.MAIL_PASSWORD,
         resendKey: process.env.RESEND_KEY,
+        senderEmail: process.env.RESEND_SENDER_EMAIL
     },
     development: {
         env: env,
@@ -34,6 +35,7 @@ const env_config: any = {
         mailUser: process.env.MAIL_USER,
         mailPassword: process.env.MAIL_PASSWORD,
         resendKey: process.env.RESEND_KEY,
+        senderEmail: process.env.RESEND_SENDER_EMAIL
     }
 }
 

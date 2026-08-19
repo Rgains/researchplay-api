@@ -32,15 +32,16 @@ class MailService {
     }
 
     async sendVerificationTokenMail(code: string, token: string, recipient?: string) {
-        return this.transporter.sendMail({
-            from: currentConfig.mailUser,
+        this.resend.emails.send({
+            from: `ResearchPlay <okoisorjr@gmail.com>`,
             to: recipient ?? currentConfig.mailUser,
             subject: `Verification Code`,
-            html: `<p>Here is your verification code, ${code}.</p> 
+            html: `<p>Here is your verification code, <strong>${code}.</strong></p> 
             <p>Click the link to verify your account 
             <a href="${currentConfig.frontendUrl}/auth/otp-verification?token=${token}">
             ${currentConfig.frontendUrl}/auth/otp-verification?token=${token}</a></p>`
         });
+        
     }
 }
 
