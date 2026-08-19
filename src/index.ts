@@ -66,14 +66,20 @@ app.use("/api/v1/admin", adminRoutes);
 const PORT = Number(currentConfig.port || 4000);
 
 const bootstrap = async () => {
-  await dbconnect();
+  try {
+    await dbconnect();
+    console.log('Database connected');
 
-  await transporter.verify();
-  console.log('Email transporter is ready');
-  
-  app.listen(PORT, () => console.log(`ReserachPlay API running on port: ${PORT}`));
-  
-  logger.info("Application Started");
+    await transporter.verify();
+    console.log('Email transporter is ready');
+
+    app.listen(PORT, () => {
+      console.log(`ResearchPlay API running on port: ${PORT}`);
+    });
+  } catch (error: any) {
+    console.error('Application startup failed:', error);
+    process.exit(1);
+  }
 };
 
 bootstrap();
