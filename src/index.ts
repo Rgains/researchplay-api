@@ -67,7 +67,7 @@ const PORT = Number(currentConfig.port ?? 4000);
 
 const bootstrap = async () => {
   await dbconnect();
-  transporter.verify((error, success) => {
+  await transporter.verify((error, success) => {
     if (error) {
       console.error('Email transporter error:', error);
     } else {
