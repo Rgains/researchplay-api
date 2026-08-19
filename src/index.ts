@@ -70,12 +70,16 @@ const bootstrap = async () => {
     await dbconnect();
     console.log('Database connected');
 
-    await transporter.verify();
-    console.log('Email transporter is ready');
-
     app.listen(PORT, () => {
       console.log(`ResearchPlay API running on port: ${PORT}`);
     });
+
+    try {
+      await transporter.verify();
+      console.log('Email transporter is ready');
+    } catch (error) {
+      console.error('Email transporter error:', error);
+    }
   } catch (error: any) {
     console.error('Application startup failed:', error);
     process.exit(1);
