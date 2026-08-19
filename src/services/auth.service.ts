@@ -5,7 +5,7 @@ import { acctStatuses, acctTypes } from "../types";
 import { currentConfig } from "../utils/config";
 import { hasher } from "../utils/password-hasher";
 import { compare } from "bcryptjs";
-import { generateAccessToken, generateAcctVerificationToken, generateRefreshToken, generateVerificationCode } from "../utils/token-generator";
+import { generateAccessToken, generateAcctVerificationToken, generatePasswordResetToken, generateRefreshToken, generateVerificationCode } from "../utils/token-generator";
 import Institute from "../models/Institution/Institute";
 import mailService from "./mail.service";
 import jwt from 'jsonwebtoken';
@@ -69,7 +69,7 @@ class AuthService {
     const entered_password = req.body.password;
 
     if (!email || !entered_password) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         statusText: "Bad Request",
         message: "kindly provide a valid email and password",
@@ -130,9 +130,82 @@ class AuthService {
     }
   }
 
-  async forgotPassword(req: Request, res: Response) {}
+  async forgotPassword(req: Request, res: Response) {
+    const email = req.body.email;
 
-  async resetPassword(req: Request, res: Response) {}
+    try {
+      const acct = await User.findOne({ email: email });
+
+      if(!acct) {
+        return res.status(404).json({
+          status: 404,
+          statusText: "Not Found!",
+          message: "A password reset link will be forwarded to your email address",
+        });
+      }
+
+      const password_reset_token = generatePasswordResetToken({ uid: acct?._id, email: acct?.email });
+
+      mailService.sendPasswordResetLinkMail(password_reset_token, currentConfig.env === 'production' ? email : null);
+      
+      return res.status(200).json({
+        statusCode: 200,
+        statusText: "",
+        message: ""
+      });
+    } catch(error: any) {
+      console.log(error);
+      logger.error("[Auth Service] failed login attempt", error);
+      return res
+        .status(500)
+        .json({ statusCode: 500, statusText: "internal server error", error: error });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response) {
+    const { token, new_password, confirm_password } = req.body;
+
+    if(!token || !new_password || !confirm_password) {
+      return res
+          .status(400)
+          .json({ statusCode: 400, statusText: "Bad Request", message: "" });
+    }
+
+    try {
+      const decoded: any = jwt.decode(token);
+
+      if(isExpired(decoded)) {
+        logger.error("[Auth Service] failed login attempt");
+        return res
+          .status(401)
+          .json({ statusCode: 401, statusText: "Unauthorized", message: "" });
+      }
+
+      if(new_password !== confirm_password) {
+        return res
+          .status(400)
+          .json({ statusCode: 400, statusText: "Bad Request", message: "Passwords do not match!" });
+      }
+
+      await User.findByIdAndUpdate(
+        decoded?.uid, 
+        { password: hasher(confirm_password) }, 
+        { upsert: true, new: true }
+      );
+
+      return res.status(200).json({
+        statusCode: 200,
+        statusText: "Success",
+        message: "Password updated successfully"
+      });
+    } catch(error: any) {
+      console.log(error);
+      logger.error("[Auth Service] failed login attempt", error);
+      return res
+        .status(500)
+        .json({ statusCode: 500, statusText: "internal server error", error: error });
+    }
+  }
 
   async resendVerificationLink(req: Request, res: Response) {
     const email = req.body.email;

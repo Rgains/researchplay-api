@@ -54,6 +54,28 @@ class MailService {
             return;
         }
     }
+
+    async sendPasswordResetLinkMail(token: string, recipient?: string) {
+        try{
+            const {data, error} = await this.resend.emails.send({
+                from: `ResearchPlay <${currentConfig.senderEmail}>`,
+                to: recipient ?? currentConfig.mailUser,
+                subject: `Password Reset`,
+                html: `<p>Click the link to reset your password. 
+                <a href="${currentConfig.frontendUrl}/auth/reset-password?token=${token}">
+                ${currentConfig.frontendUrl}/auth/reset-password?token=${token}</a></p>`
+            });
+            
+            if(error) {
+                return;
+            }
+            logger.info('[Mail Service] verification token sent successfully to: ', recipient);
+            return;
+        } catch(error: any) {
+            logger.info('[Mail Service] Failed to send verification token');
+            return;
+        }
+    }
 }
 
 export default new MailService(transporter);

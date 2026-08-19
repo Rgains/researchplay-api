@@ -41,8 +41,6 @@ export function requireAdmin() {
 }
 
 export function requireCookie(req: Request, res: Response, next: NextFunction) {
-  console.log(req.cookies);
-
   if(!req.cookies.access_token && !req.cookies.refresh_token) {
     return res.status(401).json({
       status: 401,

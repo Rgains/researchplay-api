@@ -20,6 +20,12 @@ export function generateAcctVerificationToken(payload: any, period?: any) {
     });
 }
 
+export function generatePasswordResetToken(payload: any, period?: any) {
+    return Jwt.sign(payload, currentConfig.passwordResetSecret, {
+        expiresIn: period ?? '1d'
+    });
+}
+
 export function generateVerificationCode() {
     return crypto.randomInt(100000, 1000000).toString();
 }
