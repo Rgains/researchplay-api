@@ -17,6 +17,7 @@ import { dbconnect } from "./store/db";
 import logger from "./utils/logger";
 import { currentConfig } from './utils/config';
 import cookieParser from "cookie-parser";
+import { transporter } from "./utils/mailTransporter";
 
 // MongoDB driver v7 uses the Web Crypto global, which Node 18 does not
 // provide by default. Node 20 exposes this natively.
@@ -66,8 +67,15 @@ const PORT = Number(currentConfig.port ?? 4000);
 
 const bootstrap = async () => {
   await dbconnect();
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error('Email transporter error:', error);
+    } else {
+      console.log('Email transporter is ready');
+    }
+  });
   app.listen(PORT, () => console.log(`OpenBrief API on :${currentConfig.port}`));
-  //console.log(currentConfig);
+  console.log(currentConfig);
   logger.info("Application Started");
 };
 
