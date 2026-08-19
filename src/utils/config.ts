@@ -8,7 +8,7 @@ const env_config: any = {
     production: {
         env: env,
         frontendUrl: process.env.FRONTEND_URI, 
-        port: process.env.PORT,
+        port: Number(process.env.PORT),
         mongoUri: process.env.MONGO_URI,
         accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
         refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
@@ -23,7 +23,7 @@ const env_config: any = {
     development: {
         env: env,
         frontendUrl: process.env.FRONTEND_URI,
-        port: process.env.PORT,
+        port: Number(process.env.PORT),
         mongoUri: process.env.MONGO_URI,
         accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
         refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
