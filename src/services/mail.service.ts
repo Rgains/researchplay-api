@@ -1,5 +1,5 @@
 import { Transporter } from 'nodemailer';
-import { testMailAccount, transporter } from '../utils/mailTransporter';
+import { transporter } from '../utils/mailTransporter';
 import { MailObject } from '../types';
 import { Resend } from 'resend';
 import { currentConfig } from '../utils/config';
@@ -22,10 +22,10 @@ class MailService {
         });
     }
 
-    async SendWithResend(data: any) {
+    async SendWithResend(data: any, recipient?: string) {
         this.resend.emails.send({
             from: currentConfig.mailUser,
-            to: (await testMailAccount).user ,
+            to: recipient ?? currentConfig.mailUser,
             text: data.text,
             subject: data.subject
         });

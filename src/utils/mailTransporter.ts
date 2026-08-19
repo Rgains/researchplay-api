@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 import { currentConfig } from './config';
 
-export const testMailAccount = nodemailer.createTestAccount();
-
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {

@@ -68,15 +68,10 @@ const bootstrap = async () => {
 
   await transporter.verify();
   console.log('Email transporter is ready');
-  // await transporter.verify((error, success) => {
-  //   if (error) {
-  //     console.error('Email transporter error:', error);
-  //   } else {
-  //     console.log('Email transporter is ready');
-  //   }
-  // });
-  app.listen(currentConfig.port, () => console.log(`ReserachPlay API running on :${currentConfig.port}`));
+  
   console.log(currentConfig);
+  app.listen(currentConfig.port, () => console.log(`ReserachPlay API running on :${currentConfig.port}`));
+  
   logger.info("Application Started");
 };
 
