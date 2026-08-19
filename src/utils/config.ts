@@ -8,7 +8,7 @@ const env_config: any = {
     production: {
         env: env,
         frontendUrl: process.env.FRONTEND_URI, 
-        port: process.env.PORT ?? 4000,
+        port: process.env.PORT,
         mongoUri: process.env.MONGO_URI,
         accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
         refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
@@ -23,7 +23,7 @@ const env_config: any = {
     development: {
         env: env,
         frontendUrl: process.env.FRONTEND_URI,
-        port: process.env.PORT ?? 4000,
+        port: process.env.PORT,
         mongoUri: process.env.MONGO_URI,
         accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
         refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
@@ -36,5 +36,7 @@ const env_config: any = {
         resendKey: process.env.RESEND_KEY,
     }
 }
+
+console.log(env_config[env]);
 
 export const currentConfig = env_config[env];

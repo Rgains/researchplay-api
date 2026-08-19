@@ -69,7 +69,6 @@ const bootstrap = async () => {
   await transporter.verify();
   console.log('Email transporter is ready');
   
-  console.log(currentConfig);
   app.listen(currentConfig.port, () => console.log(`ReserachPlay API running on :${currentConfig.port}`));
   
   logger.info("Application Started");
