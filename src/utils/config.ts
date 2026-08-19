@@ -39,6 +39,6 @@ const env_config: any = {
     }
 }
 
-console.log(env_config[env]);
+// console.log(env_config[env]);
 
 export const currentConfig = env_config[env];

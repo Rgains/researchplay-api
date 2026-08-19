@@ -3,6 +3,7 @@ import { transporter } from '../utils/mailTransporter';
 import { MailObject } from '../types';
 import { Resend } from 'resend';
 import { currentConfig } from '../utils/config';
+import logger from '../utils/logger';
 
 class MailService {
     private transporter: Transporter;
@@ -32,16 +33,26 @@ class MailService {
     }
 
     async sendVerificationTokenMail(code: string, token: string, recipient?: string) {
-        this.resend.emails.send({
-            from: `ResearchPlay <okoisorjr@gmail.com>`,
-            to: recipient ?? currentConfig.mailUser,
-            subject: `Verification Code`,
-            html: `<p>Here is your verification code, <strong>${code}.</strong></p> 
-            <p>Click the link to verify your account 
-            <a href="${currentConfig.frontendUrl}/auth/otp-verification?token=${token}">
-            ${currentConfig.frontendUrl}/auth/otp-verification?token=${token}</a></p>`
-        });
-        
+        try{
+            const {data, error} = await this.resend.emails.send({
+                from: `ResearchPlay <${currentConfig.senderEmail}>`,
+                to: recipient ?? currentConfig.mailUser,
+                subject: `Verification Code`,
+                html: `<p>Here is your verification code, <strong>${code}.</strong></p> 
+                <p>Click the link to verify your account 
+                <a href="${currentConfig.frontendUrl}/auth/otp-verification?token=${token}">
+                ${currentConfig.frontendUrl}/auth/otp-verification?token=${token}</a></p>`
+            });
+            
+            if(error) {
+                return false;
+            }
+            logger.info('[Mail Service] verification token sent successfully to: ', recipient);
+            return true;
+        } catch(error: any) {
+            logger.info('[Mail Service] Failed to send verification token');
+            return false;
+        }
     }
 }
 
