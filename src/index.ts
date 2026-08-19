@@ -77,8 +77,14 @@ const bootstrap = async () => {
     try {
       await transporter.verify();
       console.log('Email transporter is ready');
-    } catch (error) {
-      console.error('Email transporter error:', error);
+    } catch (error: any) {
+      console.error('Email transporter FAILED:', {
+        code: error?.code,
+        responseCode: error?.responseCode,
+        command: error?.command,
+        response: error?.response,
+        message: error?.message,
+      });
     }
   } catch (error: any) {
     console.error('Application startup failed:', error);
