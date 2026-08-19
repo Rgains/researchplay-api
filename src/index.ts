@@ -63,7 +63,7 @@ app.use("/api/v1/records", recordRoutes);
 // Admin Routes
 app.use("/api/v1/admin", adminRoutes);
 
-const PORT = Number(currentConfig.port ?? 4000);
+const PORT = Number(currentConfig.port || 4000);
 
 const bootstrap = async () => {
   await dbconnect();
