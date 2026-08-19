@@ -74,18 +74,18 @@ const bootstrap = async () => {
       console.log(`ResearchPlay API running on port: ${PORT}`);
     });
 
-    try {
-      await transporter.verify();
-      console.log('Email transporter is ready');
-    } catch (error: any) {
-      console.error('Email transporter FAILED:', {
-        code: error?.code,
-        responseCode: error?.responseCode,
-        command: error?.command,
-        response: error?.response,
-        message: error?.message,
-      });
-    }
+    // try {
+    //   await transporter.verify();
+    //   console.log('Email transporter is ready');
+    // } catch (error: any) {
+    //   console.error('Email transporter FAILED:', {
+    //     code: error?.code,
+    //     responseCode: error?.responseCode,
+    //     command: error?.command,
+    //     response: error?.response,
+    //     message: error?.message,
+    //   });
+    // }
   } catch (error: any) {
     console.error('Application startup failed:', error);
     process.exit(1);
