@@ -63,18 +63,19 @@ app.use("/api/v1/records", recordRoutes);
 // Admin Routes
 app.use("/api/v1/admin", adminRoutes);
 
-const PORT = Number(currentConfig.port ?? 4000);
-
 const bootstrap = async () => {
   await dbconnect();
-  await transporter.verify((error, success) => {
-    if (error) {
-      console.error('Email transporter error:', error);
-    } else {
-      console.log('Email transporter is ready');
-    }
-  });
-  app.listen(PORT, () => console.log(`OpenBrief API on :${currentConfig.port}`));
+
+  await transporter.verify();
+  console.log('Email transporter is ready');
+  // await transporter.verify((error, success) => {
+  //   if (error) {
+  //     console.error('Email transporter error:', error);
+  //   } else {
+  //     console.log('Email transporter is ready');
+  //   }
+  // });
+  app.listen(currentConfig.port, () => console.log(`ReserachPlay API running on :${currentConfig.port}`));
   console.log(currentConfig);
   logger.info("Application Started");
 };
