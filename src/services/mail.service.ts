@@ -45,13 +45,13 @@ class MailService {
             });
             
             if(error) {
-                return false;
+                return;
             }
             logger.info('[Mail Service] verification token sent successfully to: ', recipient);
-            return true;
+            return;
         } catch(error: any) {
             logger.info('[Mail Service] Failed to send verification token');
-            return false;
+            return;
         }
     }
 }
